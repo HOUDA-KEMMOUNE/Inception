@@ -1,5 +1,6 @@
 services:
   mariadb:
+    container_name: mariadb
     build:
       context: ./requirements/mariadb
       dockerfile: Dockerfile
@@ -10,10 +11,13 @@ services:
     environment:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    secrets:
+      - db_passwd
+      - db_root_passwd
+
 
   wordpress:
+    container_name: wordpress
     build:
       context: ./requirements/wordpress
       dockerfile: Dockerfile
@@ -24,7 +28,8 @@ services:
     environment:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    secrets:
+      - db_passwd
 
 volumes:
   mariadb_data:
@@ -32,3 +37,10 @@ volumes:
 
 networks:
   inception:
+
+secrets:
+  db_passwd:
+    environment: MYSQL_PASSWORD
+
+  db_root_passwd:
+    environment: MYSQL_ROOT_PASSWORD
