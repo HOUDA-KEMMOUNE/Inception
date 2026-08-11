@@ -3,8 +3,32 @@ services:
     build:
       context: ./requirements/mariadb
       dockerfile: Dockerfile
+    networks:
+      - inception
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
 
   wordpress:
     build:
       context: ./requirements/wordpress
       dockerfile: Dockerfile
+    networks:
+      - inception
+    volumes:
+      - wordpress_data:/var/www/html
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+
+volumes:
+  mariadb_data:
+  wordpress_data:
+
+networks:
+  inception:
