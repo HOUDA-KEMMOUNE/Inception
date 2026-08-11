@@ -28,12 +28,33 @@ services:
     environment:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
+      DOMAIN_NAME: ${DOMAIN_NAME}
+      WP_TITLE: ${WP_TITLE}
+      WP_ADMIN_USER: ${WP_ADMIN_USER}
+      WP_ADMIN_EMAIL: ${WP_ADMIN_EMAIL}
+      WP_USER: ${WP_USER} 
+      WP_USER_EMAIL: ${WP_USER_EMAIL}
     secrets:
       - db_passwd
+      - wp_admin_passwd
+      - wp_user_passwd
+    depends_on:
+      - mariadb
 
 volumes:
   mariadb_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/hkemmoun/data/mariadb
+
   wordpress_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/hkemmoun/data/wordpress
 
 networks:
   inception:
@@ -44,3 +65,9 @@ secrets:
 
   db_root_passwd:
     environment: MYSQL_ROOT_PASSWORD
+
+  wp_admin_passwd:
+    environment: WP_ADMIN_PASSWORD
+  
+  wp_user_passwd:
+    environment: WP_USER_PASSWORD
