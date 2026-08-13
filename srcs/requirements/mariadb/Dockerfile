@@ -1,4 +1,4 @@
-FROM debian:12
+FROM debian:bookworm-slim
 
 RUN apt update
 RUN apt install -y mariadb-server

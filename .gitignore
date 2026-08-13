@@ -1,1 +1,13 @@
+# Environment / secrets
 .env
+*.env
+
+# Private keys / certificates
+*.key
+*.pem
+
+# Generated data
+data/
+
+# WordPress / database runtime files
+srcs/data/

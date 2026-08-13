@@ -1,5 +1,6 @@
 services:
   mariadb:
+    image: mariadb:inception
     container_name: mariadb
     build:
       context: ./requirements/mariadb
@@ -15,7 +16,6 @@ services:
       - db_passwd
       - db_root_passwd
     restart: always
-
 
   wordpress:
     container_name: wordpress
@@ -43,7 +43,6 @@ services:
       - mariadb
     restart: always
 
-
   nginx:
     container_name: nginx
     build:
@@ -58,7 +57,6 @@ services:
     ports:
       - "443:443"
     restart: always
-
 
 
 volumes:

@@ -1,4 +1,4 @@
-FROM debian:12
+FROM debian:bookworm-slim
 
 RUN apt update && apt install -y mariadb-client
 
