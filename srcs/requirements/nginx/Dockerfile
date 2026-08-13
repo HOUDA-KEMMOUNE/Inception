@@ -11,5 +11,5 @@ RUN openssl req -x509 -nodes -days 365 \
     -subj "/CN=hkemmoun.42.fr"
 
 COPY config/nginx.conf /etc/nginx/nginx.conf
-EXPOSE 443
-CMD ["nginx", "-g", "daemon off;"]
+
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
