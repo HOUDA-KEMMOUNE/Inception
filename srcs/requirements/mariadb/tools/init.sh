@@ -5,16 +5,15 @@ set -e
 mkdir -p /run/mysqld
 chown mysql:mysql /run/mysqld
 
-# Start MariaDB temporarily
+DB_PASSWORD=$(cat /run/secrets/db_passwd)
+
 mysqld --user=mysql --skip-networking &
 
-# Wait until MariaDB is ready
 until mariadb -u root -e "SELECT 1;" >/dev/null 2>&1
 do
     sleep 1
 done
 
-# Check if the WordPress database already exists
 if [ ! -d "/var/lib/mysql/${MYSQL_DATABASE}" ]; then
 
     echo "Initializing MariaDB..."
@@ -22,11 +21,13 @@ if [ ! -d "/var/lib/mysql/${MYSQL_DATABASE}" ]; then
     mariadb -u root <<EOF
 CREATE DATABASE ${MYSQL_DATABASE};
 
-CREATE USER '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';
+CREATE USER '${MYSQL_USER}'@'%' IDENTIFIED BY '${DB_PASSWORD}';
 
 GRANT ALL PRIVILEGES
 ON ${MYSQL_DATABASE}.*
 TO '${MYSQL_USER}'@'%';
+
+FLUSH PRIVILEGES;
 EOF
 
 else
@@ -35,8 +36,6 @@ else
 
 fi
 
-# Stop temporary MariaDB
 mysqladmin -u root shutdown
 
-# Start MariaDB normally
 exec mysqld --user=mysql
