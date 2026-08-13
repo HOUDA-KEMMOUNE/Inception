@@ -8,15 +8,15 @@ DB_PASSWORD=$(cat /run/secrets/db_passwd)
 WP_ADMIN_PASSWORD=$(cat /run/secrets/wp_admin_passwd)
 WP_USER_PASSWORD=$(cat /run/secrets/wp_user_passwd)
 
-AUTH_KEY=$(php -r 'echo bin2hex(random_bytes(32));')
-SECURE_AUTH_KEY=$(php -r 'echo bin2hex(random_bytes(32));')
-LOGGED_IN_KEY=$(php -r 'echo bin2hex(random_bytes(32));')
-NONCE_KEY=$(php -r 'echo bin2hex(random_bytes(32));')
+# AUTH_KEY=$(php -r 'echo bin2hex(random_bytes(32));')
+# SECURE_AUTH_KEY=$(php -r 'echo bin2hex(random_bytes(32));')
+# LOGGED_IN_KEY=$(php -r 'echo bin2hex(random_bytes(32));')
+# NONCE_KEY=$(php -r 'echo bin2hex(random_bytes(32));')
 
-AUTH_SALT=$(php -r 'echo bin2hex(random_bytes(32));')
-SECURE_AUTH_SALT=$(php -r 'echo bin2hex(random_bytes(32));')
-LOGGED_IN_SALT=$(php -r 'echo bin2hex(random_bytes(32));')
-NONCE_SALT=$(php -r 'echo bin2hex(random_bytes(32));')
+# AUTH_SALT=$(php -r 'echo bin2hex(random_bytes(32));')
+# SECURE_AUTH_SALT=$(php -r 'echo bin2hex(random_bytes(32));')
+# LOGGED_IN_SALT=$(php -r 'echo bin2hex(random_bytes(32));')
+# NONCE_SALT=$(php -r 'echo bin2hex(random_bytes(32));')
 
 cat > /var/www/html/wp-config.php <<EOF
 <?php
@@ -28,15 +28,6 @@ define('DB_HOST', 'mariadb:3306');
 
 define('DB_CHARSET', 'utf8mb4');
 define('DB_COLLATE', '');
-
-define('AUTH_KEY',         '${AUTH_KEY}');
-define('SECURE_AUTH_KEY',  '${SECURE_AUTH_KEY}');
-define('LOGGED_IN_KEY',    '${LOGGED_IN_KEY}');
-define('NONCE_KEY',        '${NONCE_KEY}');
-define('AUTH_SALT',        '${AUTH_SALT}');
-define('SECURE_AUTH_SALT', '${SECURE_AUTH_SALT}');
-define('LOGGED_IN_SALT',   '${LOGGED_IN_SALT}');
-define('NONCE_SALT',       '${NONCE_SALT}');
 
 \$table_prefix = 'wp_';
 
@@ -79,7 +70,7 @@ if ! wp core is-installed --path=/var/www/html --allow-root; then
         "${WP_USER}" \
         "${WP_USER_EMAIL}" \
         --user_pass="${WP_USER_PASSWORD}" \
-        --role=subscriber \
+        --role=author \
         --allow-root \
         --path=/var/www/html
 

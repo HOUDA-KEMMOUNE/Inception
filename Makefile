@@ -3,7 +3,7 @@ WP_DATA = $(DATA_DIR)/wordpress
 DB_DATA = $(DATA_DIR)/mariadb
 
 all: setup
-	docker compose -f srcs/docker-compose.yml up -d
+	docker compose -f srcs/docker-compose.yml up -d --build
 
 setup:
 	mkdir -p $(WP_DATA) $(DB_DATA)
@@ -22,6 +22,8 @@ clean:
 
 fclean:
 	docker compose -f srcs/docker-compose.yml down -v
+	docker rmi -f mariadb:inception nginx:inception wordpress:inception
+	sudo rm -rf $(WP_DATA) $(DB_DATA)
 
 re: fclean all
 
